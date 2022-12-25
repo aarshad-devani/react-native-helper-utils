@@ -20,6 +20,10 @@
   "dependencies": {
     "google-libphonenumber": "^3.2.31"
   },
+  "peerDependencies": {
+    "react": ">18.1.0",
+    "react-native": ">0.70"
+  },
   "devDependencies": {
     "@types/google-libphonenumber": "^7.4.23",
     "@types/react": "^18.0.21",
