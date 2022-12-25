@@ -1,5 +1,16 @@
 import React, { FC, useEffect, useRef } from "react";
-import { Modal, FlatList, ViewStyle, TextStyle, View, Text, Pressable, useWindowDimensions } from "react-native";
+import {
+  Modal,
+  FlatList,
+  ViewStyle,
+  TextStyle,
+  View,
+  Text,
+  Pressable,
+  useWindowDimensions,
+  StyleProp,
+  StyleSheet,
+} from "react-native";
 import { countryCodeEmoji } from "./CountryCodeEmoji";
 import AllCountryList from "./countries.json";
 import { modalStyles as styles } from "./styles";
@@ -20,15 +31,15 @@ interface ICountryModal {
   selectedCountryItem?: ICountryItem;
   modalVisible: boolean;
   onDismiss?: () => void;
-  itemContainerStyle?: ViewStyle;
-  listItemTextStyle?: TextStyle;
+  itemContainerStyle?: StyleProp<ViewStyle>;
+  listItemTextStyle?: StyleProp<TextStyle>;
 }
 
 interface ICountryModalItem {
   onItemPress: (itemSelected: ICountryItem) => void;
   countryItem: ICountryItem;
-  itemContainerStyle?: ViewStyle;
-  listItemTextStyle?: TextStyle;
+  itemContainerStyle?: StyleProp<ViewStyle>;
+  listItemTextStyle?: StyleProp<TextStyle>;
 }
 const CountryModalItem: FC<ICountryModalItem> = (props) => {
   return (
@@ -37,9 +48,11 @@ const CountryModalItem: FC<ICountryModalItem> = (props) => {
         props.onItemPress(props.countryItem);
       }}
     >
-      <View style={[styles.listItem, props.itemContainerStyle]}>
+      <View style={[styles.listItem, StyleSheet.compose({}, props.itemContainerStyle)]}>
         <Text>{countryCodeEmoji(props.countryItem.iso2)}</Text>
-        <Text style={[props.listItemTextStyle]}>{`+${props.countryItem.dialCode}  ${props.countryItem.name}`}</Text>
+        <Text
+          style={StyleSheet.compose({}, props.listItemTextStyle)}
+        >{`+${props.countryItem.dialCode}  ${props.countryItem.name}`}</Text>
       </View>
     </Pressable>
   );
