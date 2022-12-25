@@ -1,0 +1,30 @@
+{
+  "name": "react-native-helper-utils",
+  "version": "1.0.0",
+  "description": "List of Common Utils, Functions and Libraries which can be used in any react-native projects",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aarshad786/react-native-helper-utils.git"
+  },
+  "keywords": [],
+  "author": "Aarshad Dinesh Devani",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aarshad786/react-native-helper-utils/issues"
+  },
+  "homepage": "https://github.com/aarshad786/react-native-helper-utils#readme",
+  "dependencies": {
+    "google-libphonenumber": "^3.2.31"
+  },
+  "devDependencies": {
+    "@types/google-libphonenumber": "^7.4.23",
+    "@types/react": "^18.0.21",
+    "@types/react-native": "^0.70.6",
+    "react": "^18.1.0",
+    "react-native": "^0.70.6"
+  }
+}
