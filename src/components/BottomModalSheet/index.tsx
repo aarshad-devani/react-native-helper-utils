@@ -90,7 +90,7 @@ const BottomSheet: ForwardRefRenderFunction<BottomSheetHandles, PropsWithChildre
           })(e, gestureState);
         }
       },
-      onPanResponderRelease: (e, gestureState) => {
+      onPanResponderRelease: (_e, gestureState) => {
         const gestureLimitArea = props.height / 3;
         const gestureDistance = gestureState.dy;
         if (gestureDistance > gestureLimitArea) {

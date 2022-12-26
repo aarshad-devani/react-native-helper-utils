@@ -1,6 +1,6 @@
 // https://github.com/wvteijlingen/react-native-themed-styles
 // https://dev.to/wvteijlingen/dead-simple-theming-and-dark-mode-in-react-native-2l09
-import { ImageStyle, TextStyle, ViewStyle } from "react-native";
+import type { ImageStyle, TextStyle, ViewStyle } from "react-native";
 
 type AppearanceProvider<T> = () => T;
 

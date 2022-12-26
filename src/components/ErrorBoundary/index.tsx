@@ -1,6 +1,6 @@
 import React, { Component, ErrorInfo } from "react";
 
-import { IState, IProps } from "./types";
+import type { IState, IProps } from "./types";
 import defaultFallBackComponent from "./FallbackComponent";
 
 export type { IFallBackProps } from "./types";
