@@ -1,65 +1,63 @@
-import React, { FC, useState, useEffect } from "react";
-import { TextInput, TextInputProps, ViewStyle, TextStyle, Pressable, View, Text } from "react-native";
-import { PhoneNumberUtil, PhoneNumberFormat } from "google-libphonenumber";
+import React, { useState, useEffect, ForwardRefRenderFunction, useImperativeHandle, ElementRef } from "react";
+import {
+  TextInput,
+  TextInputProps,
+  ViewStyle,
+  TextStyle,
+  Pressable,
+  View,
+  Text,
+  StyleProp,
+  StyleSheet,
+} from "react-native";
 
 import { styles } from "./styles";
 import { countryCodeEmoji } from "./CountryCodeEmoji";
 import { ICountryItem, CountryModal, CountryList } from "./CountryModal";
+import { GetRawNumber } from "./phoneUtils";
 
-interface IPhoneInput {
+export interface IPhoneInput {
+  countryList?: ICountryItem[];
+  disableModal?: boolean;
   outerContainerStyle?: ViewStyle;
   textInputProps?: TextInputProps;
   initialCountryCode?: string;
-  countryFlagTextStyle?: TextStyle;
-  countryFlagButtonStyle?: ViewStyle;
-  disableModal?: boolean;
-  countryList?: ICountryItem[];
-  onFlagButtonPress?: () => void;
+  countryFlagTextStyle?: StyleProp<TextStyle>;
+  countryFlagButtonStyle?: StyleProp<ViewStyle>;
   value: string;
+  onCountryUpdate?: (selectedCountry: ICountryItem) => void;
+  onFlagButtonPress?: () => void;
   onPhoneNumberUpdate: (newValue: string, formattedValue: string, countryCode: string) => void;
 }
 
-const phoneNumberUtil = PhoneNumberUtil.getInstance();
+export interface IPhoneInputMethods {
+  getCountry: () => ICountryItem;
+  getRawNumber: () => string;
+  getFullNumber: () => string;
+}
 
-export const isValidNumber = (phoneString: string, countryCode: string = "IN") => {
-  try {
-    const number1 = phoneNumberUtil.parseAndKeepRawInput(phoneString, countryCode);
-    return phoneNumberUtil.isValidNumber(number1);
-  } catch (err) {
-    return false;
-  }
-};
-export const GetRawNumber = (phoneString: string, countryCode: string = "IN"): string => {
-  // if(phoneString === "") return ""
-  // console.log("Params", phoneString, countryCode);
-  if (phoneString.length < 12) return phoneString;
-  try {
-    const mainNumber = phoneNumberUtil.parseAndKeepRawInput(phoneString, countryCode);
-    const rawNumber =
-      phoneNumberUtil.isValidNumber(mainNumber) && mainNumber.getNationalNumber()
-        ? mainNumber.getNationalNumber()?.toString()
-        : phoneString;
-    return rawNumber && Boolean(rawNumber) ? rawNumber : phoneString;
-  } catch (err) {
-    console.warn("Error Returning", err);
-    return phoneString;
-  }
-};
-export const GetFormattedNumber = (phoneString: string, countryCode: string = "IN"): string => {
-  const mainNumber = phoneNumberUtil.parseAndKeepRawInput(phoneString, countryCode);
-  return phoneNumberUtil.format(mainNumber, PhoneNumberFormat.E164);
-};
+export type PhoneInputRef = IPhoneInputMethods;
 
-export const PhoneInput: FC<IPhoneInput> = (props) => {
+export const PhoneInput: ForwardRefRenderFunction<IPhoneInputMethods, IPhoneInput> = (props, forwardedRef) => {
   const initialCountryCode = props.initialCountryCode ?? "in";
-  const [selectedCountry, setSelectedCountry] = useState<ICountryItem | undefined>(
-    CountryList.find((x) => x.iso2.toLowerCase() === initialCountryCode.toLowerCase())
+  const [selectedCountry, setSelectedCountry] = useState<ICountryItem>(
+    CountryList.find((x) => x.iso2.toLowerCase() === (initialCountryCode ?? "in").toLowerCase())!
   );
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [phoneNumberInputData, setPhoneNumberInputData] = useState<string>(
-    GetRawNumber(props.value ?? "", selectedCountry?.iso2)
+    GetRawNumber(props.value ?? "", selectedCountry.iso2)
   );
+
+  useImperativeHandle(forwardedRef, () => ({
+    getCountry: () => selectedCountry,
+    getRawNumber: () => phoneNumberInputData,
+    getFullNumber: () => "+" + selectedCountry.dialCode + phoneNumberInputData,
+  }));
+
+  useEffect(() => {
+    props.onCountryUpdate && props.onCountryUpdate(selectedCountry);
+  }, [selectedCountry]);
 
   useEffect(() => {
     // if (phoneNumberInputData.length > 10) {
@@ -82,12 +80,12 @@ export const PhoneInput: FC<IPhoneInput> = (props) => {
         <Pressable
           onPress={() => {
             props.onFlagButtonPress && props.onFlagButtonPress();
-            !props.disableModal && setModalOpen(!modalOpen);
+            !props.disableModal && setModalOpen((curr) => !curr);
           }}
         >
-          <View style={[styles.container, styles.flagButton, props.countryFlagButtonStyle]}>
+          <View style={[styles.container, styles.flagButton, StyleSheet.compose({}, props.countryFlagButtonStyle)]}>
             <Text>{countryCodeEmoji(selectedCountry?.iso2)}</Text>
-            <Text style={[props.countryFlagTextStyle]}>{`+${selectedCountry?.dialCode}`}</Text>
+            <Text style={StyleSheet.compose({}, props.countryFlagTextStyle)}>{`+${selectedCountry?.dialCode}`}</Text>
           </View>
         </Pressable>
         <View style={{ alignSelf: "stretch", width: "80%" }}>

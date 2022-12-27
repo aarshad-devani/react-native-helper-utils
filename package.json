@@ -16,18 +16,59 @@
     "url": "git+https://github.com/aarshad786/react-native-helper-utils.git"
   },
   "keywords": [],
-  "author": "Aarshad Dinesh Devani",
+  "author": "Aarshad Dinesh Devani <addy.aarshad@gmail.com> (https://github.com/aarshad786)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/aarshad786/react-native-helper-utils/issues"
   },
   "homepage": "https://github.com/aarshad786/react-native-helper-utils#readme",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "release-it": {
+    "git": {
+      "commitMessage": "chore: release ${version}",
+      "tagName": "v${version}"
+    },
+    "npm": {
+      "publish": true
+    },
+    "github": {
+      "release": true
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": "angular"
+      }
+    }
+  },
+  "jest": {
+    "preset": "react-native",
+    "modulePathIgnorePatterns": [
+      "<rootDir>/example/node_modules",
+      "<rootDir>/lib/"
+    ]
+  },
+  "react-native-builder-bob": {
+    "source": "src",
+    "output": "dist",
+    "targets": [
+      "commonjs",
+      "module",
+      [
+        "typescript",
+        {
+          "project": "tsconfig.build.json"
+        }
+      ]
+    ]
+  },
   "dependencies": {
     "google-libphonenumber": "^3.2.31"
   },
   "peerDependencies": {
-    "react": ">18.1.0",
-    "react-native": ">0.70"
+    "react": "*",
+    "react-native": "*"
   },
   "devDependencies": {
     "@types/google-libphonenumber": "^7.4.23",
