@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ForwardRefRenderFunction, useImperativeHandle, ElementRef } from "react";
+import React, { useState, useEffect, ForwardRefRenderFunction, useImperativeHandle } from "react";
 import {
   TextInput,
   TextInputProps,

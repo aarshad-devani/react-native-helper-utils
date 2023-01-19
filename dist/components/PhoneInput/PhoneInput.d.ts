@@ -1,20 +1,23 @@
-import { FC } from "react";
-import { TextInputProps, ViewStyle, TextStyle } from "react-native";
+import { ForwardRefRenderFunction } from "react";
+import { TextInputProps, ViewStyle, TextStyle, StyleProp } from "react-native";
 import { ICountryItem } from "./CountryModal";
-interface IPhoneInput {
+export interface IPhoneInput {
+    countryList?: ICountryItem[];
+    disableModal?: boolean;
     outerContainerStyle?: ViewStyle;
     textInputProps?: TextInputProps;
     initialCountryCode?: string;
-    countryFlagTextStyle?: TextStyle;
-    countryFlagButtonStyle?: ViewStyle;
-    disableModal?: boolean;
-    countryList?: ICountryItem[];
-    onFlagButtonPress?: () => void;
+    countryFlagTextStyle?: StyleProp<TextStyle>;
+    countryFlagButtonStyle?: StyleProp<ViewStyle>;
     value: string;
+    onCountryUpdate?: (selectedCountry: ICountryItem) => void;
+    onFlagButtonPress?: () => void;
     onPhoneNumberUpdate: (newValue: string, formattedValue: string, countryCode: string) => void;
 }
-export declare const isValidNumber: (phoneString: string, countryCode?: string) => boolean;
-export declare const GetRawNumber: (phoneString: string, countryCode?: string) => string;
-export declare const GetFormattedNumber: (phoneString: string, countryCode?: string) => string;
-export declare const PhoneInput: FC<IPhoneInput>;
-export {};
+export interface IPhoneInputMethods {
+    getCountry: () => ICountryItem;
+    getRawNumber: () => string;
+    getFullNumber: () => string;
+}
+export type PhoneInputRef = IPhoneInputMethods;
+export declare const PhoneInput: ForwardRefRenderFunction<IPhoneInputMethods, IPhoneInput>;

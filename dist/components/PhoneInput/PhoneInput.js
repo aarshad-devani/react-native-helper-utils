@@ -23,52 +23,26 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PhoneInput = exports.GetFormattedNumber = exports.GetRawNumber = exports.isValidNumber = void 0;
+exports.PhoneInput = void 0;
 const react_1 = __importStar(require("react"));
 const react_native_1 = require("react-native");
-const google_libphonenumber_1 = require("google-libphonenumber");
 const styles_1 = require("./styles");
 const CountryCodeEmoji_1 = require("./CountryCodeEmoji");
 const CountryModal_1 = require("./CountryModal");
-const phoneNumberUtil = google_libphonenumber_1.PhoneNumberUtil.getInstance();
-const isValidNumber = (phoneString, countryCode = "IN") => {
-    try {
-        const number1 = phoneNumberUtil.parseAndKeepRawInput(phoneString, countryCode);
-        return phoneNumberUtil.isValidNumber(number1);
-    }
-    catch (err) {
-        return false;
-    }
-};
-exports.isValidNumber = isValidNumber;
-const GetRawNumber = (phoneString, countryCode = "IN") => {
-    // if(phoneString === "") return ""
-    // console.log("Params", phoneString, countryCode);
-    if (phoneString.length < 12)
-        return phoneString;
-    try {
-        const mainNumber = phoneNumberUtil.parseAndKeepRawInput(phoneString, countryCode);
-        const rawNumber = phoneNumberUtil.isValidNumber(mainNumber) && mainNumber.getNationalNumber()
-            ? mainNumber.getNationalNumber()?.toString()
-            : phoneString;
-        return rawNumber && Boolean(rawNumber) ? rawNumber : phoneString;
-    }
-    catch (err) {
-        console.warn("Error Returning", err);
-        return phoneString;
-    }
-};
-exports.GetRawNumber = GetRawNumber;
-const GetFormattedNumber = (phoneString, countryCode = "IN") => {
-    const mainNumber = phoneNumberUtil.parseAndKeepRawInput(phoneString, countryCode);
-    return phoneNumberUtil.format(mainNumber, google_libphonenumber_1.PhoneNumberFormat.E164);
-};
-exports.GetFormattedNumber = GetFormattedNumber;
-const PhoneInput = (props) => {
+const phoneUtils_1 = require("./phoneUtils");
+const PhoneInput = (props, forwardedRef) => {
     const initialCountryCode = props.initialCountryCode ?? "in";
-    const [selectedCountry, setSelectedCountry] = (0, react_1.useState)(CountryModal_1.CountryList.find((x) => x.iso2.toLowerCase() === initialCountryCode.toLowerCase()));
+    const [selectedCountry, setSelectedCountry] = (0, react_1.useState)(CountryModal_1.CountryList.find((x) => x.iso2.toLowerCase() === (initialCountryCode ?? "in").toLowerCase()));
     const [modalOpen, setModalOpen] = (0, react_1.useState)(false);
-    const [phoneNumberInputData, setPhoneNumberInputData] = (0, react_1.useState)((0, exports.GetRawNumber)(props.value ?? "", selectedCountry?.iso2));
+    const [phoneNumberInputData, setPhoneNumberInputData] = (0, react_1.useState)((0, phoneUtils_1.GetRawNumber)(props.value ?? "", selectedCountry.iso2));
+    (0, react_1.useImperativeHandle)(forwardedRef, () => ({
+        getCountry: () => selectedCountry,
+        getRawNumber: () => phoneNumberInputData,
+        getFullNumber: () => "+" + selectedCountry.dialCode + phoneNumberInputData,
+    }));
+    (0, react_1.useEffect)(() => {
+        props.onCountryUpdate && props.onCountryUpdate(selectedCountry);
+    }, [selectedCountry]);
     (0, react_1.useEffect)(() => {
         // if (phoneNumberInputData.length > 10) {
         //   const formattedNumber = GetFormattedNumber(
@@ -84,11 +58,11 @@ const PhoneInput = (props) => {
       <react_native_1.View style={[styles_1.styles.container, { width: "100%" }, props.outerContainerStyle]}>
         <react_native_1.Pressable onPress={() => {
             props.onFlagButtonPress && props.onFlagButtonPress();
-            !props.disableModal && setModalOpen(!modalOpen);
+            !props.disableModal && setModalOpen((curr) => !curr);
         }}>
-          <react_native_1.View style={[styles_1.styles.container, styles_1.styles.flagButton, props.countryFlagButtonStyle]}>
+          <react_native_1.View style={[styles_1.styles.container, styles_1.styles.flagButton, react_native_1.StyleSheet.compose({}, props.countryFlagButtonStyle)]}>
             <react_native_1.Text>{(0, CountryCodeEmoji_1.countryCodeEmoji)(selectedCountry?.iso2)}</react_native_1.Text>
-            <react_native_1.Text style={[props.countryFlagTextStyle]}>{`+${selectedCountry?.dialCode}`}</react_native_1.Text>
+            <react_native_1.Text style={react_native_1.StyleSheet.compose({}, props.countryFlagTextStyle)}>{`+${selectedCountry?.dialCode}`}</react_native_1.Text>
           </react_native_1.View>
         </react_native_1.Pressable>
         <react_native_1.View style={{ alignSelf: "stretch", width: "80%" }}>
