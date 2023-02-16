@@ -18,4 +18,5 @@ __exportStar(require("./Responsiveness"), exports);
 __exportStar(require("./Themefication"), exports);
 __exportStar(require("./Toast"), exports);
 __exportStar(require("./useAsyncCall"), exports);
+__exportStar(require("./useDeepCompareEffect"), exports);
 //# sourceMappingURL=index.js.map
