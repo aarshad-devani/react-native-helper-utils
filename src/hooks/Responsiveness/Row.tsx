@@ -3,7 +3,7 @@ import { StyleProp, View, ViewStyle, StyleSheet } from "react-native";
 import useGridStyles from "./styles";
 
 interface IProps {
-  rowStyles: StyleProp<ViewStyle>;
+  rowStyles?: StyleProp<ViewStyle>;
 }
 
 const Row: FC<PropsWithChildren<IProps>> = (props) => {
