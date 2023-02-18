@@ -3,6 +3,7 @@ interface IMessageConfig {
     title: string;
     message?: string;
     type: "success" | "error" | "info" | "warning";
+    illustration?: ReactNode;
     dismissOnButtonPress?: boolean;
     buttons?: Array<{
         title: string;

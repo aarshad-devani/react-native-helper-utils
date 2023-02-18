@@ -87,7 +87,9 @@ const InfiniteTabs = (props) => {
     };
     return (<react_native_1.FlatList ref={flatListRef} style={{ flexGrow: 0, minHeight: 30 }} horizontal={true} data={props.tabs} showsHorizontalScrollIndicator={false} 
     // renderScrollComponent={false}
-    renderItem={({ item }) => (<ClickableTabItem text={item[props.textProperty]} onClick={SelectTab(item)} active={item.key === selectedTab?.key}/>)} keyExtractor={(item) => item.key.toString()}/>);
+    renderItem={({ item, index }) => props.render ? (<react_1.Fragment>
+            {props.render(item, index, selectedTab ? item[props.keyProperty] === selectedTab[props.keyProperty] : false)}
+          </react_1.Fragment>) : (<ClickableTabItem text={item[props.displayProperty]} onClick={SelectTab(item)} active={selectedTab ? item[props.keyProperty] === selectedTab[props.keyProperty] : false}/>)} keyExtractor={(item) => item.key.toString()}/>);
 };
 exports.InfiniteTabs = InfiniteTabs;
 //# sourceMappingURL=InfiniteTabs.js.map

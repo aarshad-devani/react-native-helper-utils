@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { Fragment, ReactNode, useEffect, useRef } from "react";
 import { Pressable, View, Animated, FlatList, StyleSheet, StyleProp, TextStyle, ViewStyle, Text } from "react-native";
 import { CommonStyles } from "../styles";
 
@@ -7,16 +7,18 @@ interface TabItem {
   key: string | number;
 }
 
-interface InfiniteTabsProps<T = any> {
-  tabs: T[];
-  textProperty: string;
-  onTabClick: (itemClicked: TabItem) => void;
+interface InfiniteTabsProps {
+  tabs: any[];
+  onTabClick: (itemClicked: this["tabs"][0]) => void;
   activeTab?: TabItem;
+  displayProperty: keyof this["tabs"][0];
+  keyProperty: keyof this["tabs"][0];
   activeTextStyle?: StyleProp<TextStyle>;
   inActiveTextStyle?: StyleProp<TextStyle>;
   indicatorPlacement?: "top" | "bottom";
   indicatorStyle?: StyleProp<ViewStyle>;
   tabItemContainerStyle?: StyleProp<ViewStyle>;
+  render?: (item: this["tabs"][0], index: number, isSelected: boolean) => ReactNode;
 }
 
 interface ClickableTabItemProps {
@@ -83,8 +85,8 @@ const ClickableTabItem: React.FC<ClickableTabItemProps> = (props) => {
 };
 
 export const InfiniteTabs: React.FC<InfiniteTabsProps> = (props) => {
-  const [selectedTab, setSelectedTab] = React.useState<TabItem | undefined>(props.activeTab ?? props.tabs[0]);
-  const flatListRef = useRef<FlatList<TabItem> | null>(null);
+  const [selectedTab, setSelectedTab] = React.useState<typeof props["tabs"][0]>(props.activeTab ?? props.tabs[0]);
+  const flatListRef = useRef<FlatList<typeof props["tabs"][0]>>(null);
 
   useEffect(() => {
     if (props.activeTab && props.activeTab !== selectedTab) {
@@ -106,13 +108,23 @@ export const InfiniteTabs: React.FC<InfiniteTabsProps> = (props) => {
       data={props.tabs}
       showsHorizontalScrollIndicator={false}
       // renderScrollComponent={false}
-      renderItem={({ item }) => (
-        <ClickableTabItem
-          text={item[props.textProperty]}
-          onClick={SelectTab(item)}
-          active={item.key === selectedTab?.key}
-        />
-      )}
+      renderItem={({ item, index }) =>
+        props.render ? (
+          <Fragment>
+            {props.render(
+              item,
+              index,
+              selectedTab ? item[props.keyProperty] === selectedTab[props.keyProperty] : false
+            )}
+          </Fragment>
+        ) : (
+          <ClickableTabItem
+            text={item[props.displayProperty]}
+            onClick={SelectTab(item)}
+            active={selectedTab ? item[props.keyProperty] === selectedTab[props.keyProperty] : false}
+          />
+        )
+      }
       keyExtractor={(item) => item.key.toString()}
     />
   );
