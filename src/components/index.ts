@@ -1,4 +1,4 @@
-export * from "./BottomModalSheet";
+export { default as BottomModalSheet } from "./BottomModalSheet";
 export * from "./ErrorBoundary";
 export * from "./PhoneInput";
 export * from "./CustomizableAlert";

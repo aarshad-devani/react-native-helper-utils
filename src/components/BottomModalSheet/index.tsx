@@ -116,6 +116,9 @@ const BottomSheet: ForwardRefRenderFunction<BottomSheetHandles, PropsWithChildre
           {...(draggable && panResponder.panHandlers)}
           style={[
             styles.container,
+            {
+              height: animationRef,
+            },
             StyleSheet.compose(
               {
                 backgroundColor: sheetBackgroundColor,
@@ -124,9 +127,6 @@ const BottomSheet: ForwardRefRenderFunction<BottomSheetHandles, PropsWithChildre
               },
               panStyle
             ),
-            {
-              height: animationRef,
-            },
           ]}
         >
           {hasDraggableIcon && (

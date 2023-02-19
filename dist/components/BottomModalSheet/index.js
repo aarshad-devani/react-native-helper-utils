@@ -93,14 +93,14 @@ const BottomSheet = (props, forwardedRef) => {
         <react_native_1.TouchableOpacity style={styles_1.default.background} activeOpacity={1} onPress={close}/>
         <react_native_1.Animated.View {...(draggable && panResponder.panHandlers)} style={[
             styles_1.default.container,
+            {
+                height: animationRef,
+            },
             react_native_1.StyleSheet.compose({
                 backgroundColor: sheetBackgroundColor,
                 borderTopRightRadius: radius,
                 borderTopLeftRadius: radius,
             }, panStyle),
-            {
-                height: animationRef,
-            },
         ]}>
           {hasDraggableIcon && (<react_native_1.View style={styles_1.default.draggableContainer}>
               <react_native_1.View style={[
