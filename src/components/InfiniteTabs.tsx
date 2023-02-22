@@ -2,15 +2,10 @@ import React, { Fragment, ReactNode, useEffect, useRef } from "react";
 import { Pressable, View, Animated, FlatList, StyleSheet, StyleProp, TextStyle, ViewStyle, Text } from "react-native";
 import { CommonStyles } from "../styles";
 
-interface TabItem {
-  name: string;
-  key: string | number;
-}
-
 interface InfiniteTabsProps {
   tabs: any[];
   onTabClick: (itemClicked: this["tabs"][0]) => void;
-  activeTab?: TabItem;
+  activeTab?: this["tabs"][0];
   displayProperty: keyof this["tabs"][0];
   keyProperty: keyof this["tabs"][0];
   activeTextStyle?: StyleProp<TextStyle>;
@@ -96,7 +91,7 @@ export const InfiniteTabs: React.FC<InfiniteTabsProps> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.activeTab]);
 
-  const SelectTab = (tabItem: TabItem) => () => {
+  const SelectTab = (tabItem: typeof props["tabs"][0]) => () => {
     setSelectedTab(tabItem);
     props.onTabClick(tabItem);
   };

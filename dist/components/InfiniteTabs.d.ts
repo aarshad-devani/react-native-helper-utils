@@ -1,13 +1,9 @@
 import React, { ReactNode } from "react";
 import { StyleProp, TextStyle, ViewStyle } from "react-native";
-interface TabItem {
-    name: string;
-    key: string | number;
-}
 interface InfiniteTabsProps {
     tabs: any[];
     onTabClick: (itemClicked: this["tabs"][0]) => void;
-    activeTab?: TabItem;
+    activeTab?: this["tabs"][0];
     displayProperty: keyof this["tabs"][0];
     keyProperty: keyof this["tabs"][0];
     activeTextStyle?: StyleProp<TextStyle>;
