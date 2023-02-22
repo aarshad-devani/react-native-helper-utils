@@ -7,6 +7,7 @@ interface InfiniteTabsProps {
   onTabClick: (itemClicked: this["tabs"][0]) => void;
   activeTab?: this["tabs"][0];
   displayProperty: keyof this["tabs"][0];
+  keyExtractor: (data: this["tabs"][0]) => string;
   keyProperty: keyof this["tabs"][0];
   activeTextStyle?: StyleProp<TextStyle>;
   inActiveTextStyle?: StyleProp<TextStyle>;
@@ -84,7 +85,7 @@ export const InfiniteTabs: React.FC<InfiniteTabsProps> = (props) => {
   const flatListRef = useRef<FlatList<typeof props["tabs"][0]>>(null);
 
   useEffect(() => {
-    if (props.activeTab && props.activeTab !== selectedTab) {
+    if (props.activeTab && props.keyExtractor(props.activeTab) !== props.keyExtractor(selectedTab)) {
       setSelectedTab(props.activeTab);
       flatListRef.current && flatListRef.current.scrollToItem({ animated: true, item: props.activeTab });
     }
@@ -120,7 +121,7 @@ export const InfiniteTabs: React.FC<InfiniteTabsProps> = (props) => {
           />
         )
       }
-      keyExtractor={(item) => item.key.toString()}
+      keyExtractor={props.keyExtractor}
     />
   );
 };

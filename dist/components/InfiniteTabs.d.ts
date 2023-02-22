@@ -5,6 +5,7 @@ interface InfiniteTabsProps {
     onTabClick: (itemClicked: this["tabs"][0]) => void;
     activeTab?: this["tabs"][0];
     displayProperty: keyof this["tabs"][0];
+    keyExtractor: (data: this["tabs"][0]) => string;
     keyProperty: keyof this["tabs"][0];
     activeTextStyle?: StyleProp<TextStyle>;
     inActiveTextStyle?: StyleProp<TextStyle>;

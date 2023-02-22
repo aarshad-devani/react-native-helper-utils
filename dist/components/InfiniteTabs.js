@@ -75,7 +75,7 @@ const InfiniteTabs = (props) => {
     const [selectedTab, setSelectedTab] = react_1.default.useState(props.activeTab ?? props.tabs[0]);
     const flatListRef = (0, react_1.useRef)(null);
     (0, react_1.useEffect)(() => {
-        if (props.activeTab && props.activeTab !== selectedTab) {
+        if (props.activeTab && props.keyExtractor(props.activeTab) !== props.keyExtractor(selectedTab)) {
             setSelectedTab(props.activeTab);
             flatListRef.current && flatListRef.current.scrollToItem({ animated: true, item: props.activeTab });
         }
@@ -89,7 +89,7 @@ const InfiniteTabs = (props) => {
     // renderScrollComponent={false}
     renderItem={({ item, index }) => props.render ? (<react_1.Fragment>
             {props.render(item, index, selectedTab ? item[props.keyProperty] === selectedTab[props.keyProperty] : false)}
-          </react_1.Fragment>) : (<ClickableTabItem text={item[props.displayProperty]} onClick={SelectTab(item)} active={selectedTab ? item[props.keyProperty] === selectedTab[props.keyProperty] : false}/>)} keyExtractor={(item) => item.key.toString()}/>);
+          </react_1.Fragment>) : (<ClickableTabItem text={item[props.displayProperty]} onClick={SelectTab(item)} active={selectedTab ? item[props.keyProperty] === selectedTab[props.keyProperty] : false}/>)} keyExtractor={props.keyExtractor}/>);
 };
 exports.InfiniteTabs = InfiniteTabs;
 //# sourceMappingURL=InfiniteTabs.js.map
