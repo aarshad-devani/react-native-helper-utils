@@ -1,9 +1,9 @@
-import React, { Fragment, ReactNode, useEffect, useRef } from "react";
+import React, { ReactNode, useEffect, useRef } from "react";
 import { Pressable, View, Animated, FlatList, StyleSheet, StyleProp, TextStyle, ViewStyle, Text } from "react-native";
 import { CommonStyles } from "../styles";
 
-interface InfiniteTabsProps {
-  tabs: any[];
+interface InfiniteTabsProps<T = any> {
+  tabs: T[];
   onTabClick: (itemClicked: this["tabs"][0]) => void;
   activeTab?: this["tabs"][0];
   displayProperty: keyof this["tabs"][0];
@@ -14,6 +14,7 @@ interface InfiniteTabsProps {
   indicatorPlacement?: "top" | "bottom";
   indicatorStyle?: StyleProp<ViewStyle>;
   tabItemContainerStyle?: StyleProp<ViewStyle>;
+  spanFull?: boolean;
   render?: (item: this["tabs"][0], index: number, isSelected: boolean) => ReactNode;
 }
 
@@ -96,6 +97,31 @@ export const InfiniteTabs: React.FC<InfiniteTabsProps> = (props) => {
     setSelectedTab(tabItem);
     props.onTabClick(tabItem);
   };
+  if (props.spanFull) {
+    return (
+      <View style={[CommonStyles.row, CommonStyles.horizontalAlignFlex]}>
+        {props.tabs.map((item, i) => (
+          <View style={[CommonStyles.flex]} key={i}>
+            {props.render ? (
+              <Pressable onPress={SelectTab(item)}>
+                {props.render(
+                  item,
+                  i,
+                  selectedTab ? item[props.keyProperty] === selectedTab[props.keyProperty] : false
+                )}
+              </Pressable>
+            ) : (
+              <ClickableTabItem
+                text={item[props.displayProperty]}
+                onClick={SelectTab(item)}
+                active={selectedTab ? item[props.keyProperty] === selectedTab[props.keyProperty] : false}
+              />
+            )}
+          </View>
+        ))}
+      </View>
+    );
+  }
   return (
     <FlatList
       ref={flatListRef}
@@ -106,13 +132,13 @@ export const InfiniteTabs: React.FC<InfiniteTabsProps> = (props) => {
       // renderScrollComponent={false}
       renderItem={({ item, index }) =>
         props.render ? (
-          <Fragment>
+          <Pressable onPress={SelectTab(item)}>
             {props.render(
               item,
               index,
               selectedTab ? item[props.keyProperty] === selectedTab[props.keyProperty] : false
             )}
-          </Fragment>
+          </Pressable>
         ) : (
           <ClickableTabItem
             text={item[props.displayProperty]}

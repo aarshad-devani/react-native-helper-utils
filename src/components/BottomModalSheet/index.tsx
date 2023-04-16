@@ -7,10 +7,21 @@ import React, {
   ForwardRefRenderFunction,
   useImperativeHandle,
 } from "react";
-import { View, Modal, TouchableOpacity, Animated, PanResponder, ViewStyle, StyleProp, StyleSheet } from "react-native";
+import {
+  View,
+  Modal,
+  TouchableOpacity,
+  Animated,
+  PanResponder,
+  ViewStyle,
+  StyleProp,
+  StyleSheet,
+  // ViewProps,
+} from "react-native";
 import styles from "./styles";
 
 interface IBottomSheet {
+  // ref: ViewProps["ref"];
   backgroundColor?: string;
   dragIconColor?: string;
   draggable?: boolean;

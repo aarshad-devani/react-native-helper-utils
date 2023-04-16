@@ -85,11 +85,20 @@ const InfiniteTabs = (props) => {
         setSelectedTab(tabItem);
         props.onTabClick(tabItem);
     };
+    if (props.spanFull) {
+        return (<react_native_1.View style={[styles_1.CommonStyles.row, styles_1.CommonStyles.horizontalAlignFlex]}>
+        {props.tabs.map((item, i) => (<react_native_1.View style={[styles_1.CommonStyles.flex]} key={i}>
+            {props.render ? (<react_native_1.Pressable onPress={SelectTab(item)}>
+                {props.render(item, i, selectedTab ? item[props.keyProperty] === selectedTab[props.keyProperty] : false)}
+              </react_native_1.Pressable>) : (<ClickableTabItem text={item[props.displayProperty]} onClick={SelectTab(item)} active={selectedTab ? item[props.keyProperty] === selectedTab[props.keyProperty] : false}/>)}
+          </react_native_1.View>))}
+      </react_native_1.View>);
+    }
     return (<react_native_1.FlatList ref={flatListRef} style={{ flexGrow: 0, minHeight: 30 }} horizontal={true} data={props.tabs} showsHorizontalScrollIndicator={false} 
     // renderScrollComponent={false}
-    renderItem={({ item, index }) => props.render ? (<react_1.Fragment>
+    renderItem={({ item, index }) => props.render ? (<react_native_1.Pressable onPress={SelectTab(item)}>
             {props.render(item, index, selectedTab ? item[props.keyProperty] === selectedTab[props.keyProperty] : false)}
-          </react_1.Fragment>) : (<ClickableTabItem text={item[props.displayProperty]} onClick={SelectTab(item)} active={selectedTab ? item[props.keyProperty] === selectedTab[props.keyProperty] : false}/>)} keyExtractor={props.keyExtractor}/>);
+          </react_native_1.Pressable>) : (<ClickableTabItem text={item[props.displayProperty]} onClick={SelectTab(item)} active={selectedTab ? item[props.keyProperty] === selectedTab[props.keyProperty] : false}/>)} keyExtractor={props.keyExtractor}/>);
 };
 exports.InfiniteTabs = InfiniteTabs;
 //# sourceMappingURL=InfiniteTabs.js.map
