@@ -102,7 +102,7 @@ const InfiniteTabs = (props) => {
         return (<react_native_1.View style={[styles_1.CommonStyles.row, styles_1.CommonStyles.horizontalAlignFlex]}>
         {props.tabs.map((item, i) => (<react_native_1.View style={[styles_1.CommonStyles.flex]} key={i}>
             <react_native_1.Pressable onPress={SelectTab(item)}>
-              {props.render ? (props.render(item, i, selectedTab ? item[props.keyProperty] === selectedTab[props.keyProperty] : false)) : (<exports.ClickableTabItem text={item[props.displayProperty]} active={selectedTab ? item[props.keyProperty] === selectedTab[props.keyProperty] : false} textStyle={props.textStyle} indicatorStyle={props.indicatorStyle} tabItemContainerStyle={props.tabItemContainerStyle}/>)}
+              {props.render ? (props.render(item, i, selectedTab ? item[props.keyProperty] === selectedTab[props.keyProperty] : false)) : (<exports.ClickableTabItem indicatorPlacement={props.indicatorPlacement ?? "bottom"} text={item[props.displayProperty]} active={selectedTab ? item[props.keyProperty] === selectedTab[props.keyProperty] : false} textStyle={props.textStyle} indicatorStyle={props.indicatorStyle} tabItemContainerStyle={props.tabItemContainerStyle}/>)}
             </react_native_1.Pressable>
           </react_native_1.View>))}
       </react_native_1.View>);

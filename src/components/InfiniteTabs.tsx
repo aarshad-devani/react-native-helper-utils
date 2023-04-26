@@ -129,6 +129,7 @@ export const InfiniteTabs: React.FC<InfiniteTabsProps> = (props) => {
                 props.render(item, i, selectedTab ? item[props.keyProperty] === selectedTab[props.keyProperty] : false)
               ) : (
                 <ClickableTabItem
+                  indicatorPlacement={props.indicatorPlacement ?? "bottom"}
                   text={item[props.displayProperty]}
                   active={selectedTab ? item[props.keyProperty] === selectedTab[props.keyProperty] : false}
                   textStyle={props.textStyle}
