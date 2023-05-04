@@ -1,5 +1,5 @@
 export { default as BottomModalSheet } from "./BottomModalSheet";
-export * from "./ErrorBoundary";
+export { default as ErrorBoundary } from "./ErrorBoundary";
 export * from "./PhoneInput";
 export * from "./CustomizableAlert";
 export * from "./ImageWithBlur";

@@ -17,10 +17,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BottomModalSheet = void 0;
+exports.ErrorBoundary = exports.BottomModalSheet = void 0;
 var BottomModalSheet_1 = require("./BottomModalSheet");
 Object.defineProperty(exports, "BottomModalSheet", { enumerable: true, get: function () { return __importDefault(BottomModalSheet_1).default; } });
-__exportStar(require("./ErrorBoundary"), exports);
+var ErrorBoundary_1 = require("./ErrorBoundary");
+Object.defineProperty(exports, "ErrorBoundary", { enumerable: true, get: function () { return __importDefault(ErrorBoundary_1).default; } });
 __exportStar(require("./PhoneInput"), exports);
 __exportStar(require("./CustomizableAlert"), exports);
 __exportStar(require("./ImageWithBlur"), exports);
